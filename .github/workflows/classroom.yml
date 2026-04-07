@@ -1,0 +1,80 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: parta1
+      id: parta1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: parta1
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partA1"
+        timeout: 10
+        max-score: 1
+    - name: parta2
+      id: parta2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: parta2
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partA2"
+        timeout: 10
+        max-score: 1
+    - name: parta3
+      id: parta3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: parta3
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partA3"
+        timeout: 10
+        max-score: 1
+    - name: parta4
+      id: parta4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: parta4
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partA4"
+        timeout: 10
+        max-score: 1
+    - name: partb1
+      id: partb1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: partb1
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partB1"
+        timeout: 10
+        max-score: 1
+    - name: partb2
+      id: partb2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: partb2
+        setup-command: ''
+        command: gradle test --tests "SoundTest.partB2"
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        PARTA1_RESULTS: "${{steps.parta1.outputs.result}}"
+        PARTA2_RESULTS: "${{steps.parta2.outputs.result}}"
+        PARTA3_RESULTS: "${{steps.parta3.outputs.result}}"
+        PARTA4_RESULTS: "${{steps.parta4.outputs.result}}"
+        PARTB1_RESULTS: "${{steps.partb1.outputs.result}}"
+        PARTB2_RESULTS: "${{steps.partb2.outputs.result}}"
+      with:
+        runners: parta1,parta2,parta3,parta4,partb1,partb2,
